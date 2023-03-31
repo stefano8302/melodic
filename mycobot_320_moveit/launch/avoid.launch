@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node name="mycobot320_2robo_belt" pkg="move_group_interface" type="mycobot320_avoid" respawn="false" output="screen">
+  </node>
+
+</launch>

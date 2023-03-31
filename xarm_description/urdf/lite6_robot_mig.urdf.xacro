@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="lite6">
+  <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="ros_namespace" default="xarm"/>
+  <xacro:arg name="limited" default="false"/>
+  <xacro:arg name="effort_control" default="false"/>
+  <xacro:arg name="velocity_control" default="false"/>
+  <xacro:arg name="add_gripper" default="false"/>
+  <xacro:arg name="add_vacuum_gripper" default="false"/>
+
+  <xacro:arg name="add_other_geometry" default="false"/>
+  <xacro:arg name="geometry_type" default="box"/>
+  <xacro:arg name="geometry_mass" default="0.1"/>
+  <xacro:arg name="geometry_height" default="0.1"/>
+  <xacro:arg name="geometry_radius" default="0.1"/>
+  <xacro:arg name="geometry_length" default="0.1"/>
+  <xacro:arg name="geometry_width" default="0.1"/>
+  <xacro:arg name="geometry_mesh_filename" default=""/>
+  <xacro:arg name="geometry_mesh_origin_xyz" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_origin_rpy" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_xyz" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_rpy" default="0 0 0"/>
+
+  <xacro:arg name="add_other_geometry2" default="false"/>
+  <xacro:arg name="geometry_type2" default="box"/>
+  <xacro:arg name="geometry_mass2" default="0.1"/>
+  <xacro:arg name="geometry_height2" default="0.1"/>
+  <xacro:arg name="geometry_radius2" default="0.1"/>
+  <xacro:arg name="geometry_length2" default="0.1"/>
+  <xacro:arg name="geometry_width2" default="0.1"/>
+  <xacro:arg name="geometry_mesh_filename2" default=""/>
+  <xacro:arg name="geometry_mesh_origin_xyz2" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_origin_rpy2" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_xyz2" default="0 0 0"/>
+  <xacro:arg name="geometry_mesh_tcp_rpy2" default="0 0 0"/>
+
+  <xacro:arg name="add_realsense_d435i" default="false"/>
+
+  <!-- Añadimos objeto en el escenario -->
+  <xacro:arg name="add_objeto" default="false"/>
+  <xacro:arg name="objeto_type" default="box"/>
+  <xacro:arg name="objeto_mass" default="0.1"/>
+  <xacro:arg name="objeto_height" default="0.1"/>
+  <xacro:arg name="objeto_radius" default="0.1"/>
+  <xacro:arg name="objeto_length" default="0.1"/>
+  <xacro:arg name="objeto_width" default="0.1"/>
+
+  <!-- load lite6 robot -->
+  <xacro:include filename="$(find xarm_description)/urdf/lite6_robot_macro_mig.xacro" />
+  <xacro:lite6_robot prefix="$(arg prefix)" namespace="$(arg ros_namespace)" limited="$(arg limited)" 
+    effort_control="$(arg effort_control)" velocity_control="$(arg velocity_control)"
+    rs_d435i="$(arg add_realsense_d435i)"
+    add_other_geometry="$(arg add_other_geometry)" 
+    geometry_type="$(arg geometry_type)" geometry_mass="$(arg geometry_mass)"
+    geometry_height="$(arg geometry_height)" geometry_radius="$(arg geometry_radius)"
+    geometry_length="$(arg geometry_length)" geometry_width="$(arg geometry_width)"
+    geometry_mesh_filename="$(arg geometry_mesh_filename)"
+    geometry_mesh_origin_xyz="$(arg geometry_mesh_origin_xyz)" geometry_mesh_origin_rpy="$(arg geometry_mesh_origin_rpy)"
+    geometry_mesh_tcp_xyz="$(arg geometry_mesh_tcp_xyz)" geometry_mesh_tcp_rpy="$(arg geometry_mesh_tcp_rpy)"
+    add_other_geometry2="$(arg add_other_geometry2)" 
+    geometry_type2="$(arg geometry_type2)" geometry_mass2="$(arg geometry_mass2)"
+    geometry_height2="$(arg geometry_height2)" geometry_radius2="$(arg geometry_radius2)"
+    geometry_length2="$(arg geometry_length2)" geometry_width2="$(arg geometry_width2)"
+    geometry_mesh_filename2="$(arg geometry_mesh_filename2)"
+    geometry_mesh_origin_xyz2="$(arg geometry_mesh_origin_xyz2)" geometry_mesh_origin_rpy2="$(arg geometry_mesh_origin_rpy2)"
+    geometry_mesh_tcp_xyz2="$(arg geometry_mesh_tcp_xyz2)" geometry_mesh_tcp_rpy2="$(arg geometry_mesh_tcp_rpy2)"
+    
+    add_objeto="$(arg add_objeto)" 
+    objeto_type="$(arg objeto_type)" objeto_mass="$(arg objeto_mass)"
+    objeto_height="$(arg objeto_height)" objeto_radius="$(arg objeto_radius)"
+    objeto_length="$(arg objeto_length)" objeto_width="$(arg objeto_width)" />
+
+  <xacro:if value="$(arg add_gripper)">
+    <xacro:include filename="$(find xarm_description)/urdf/lite_gripper_mig.urdf.xacro" />
+    <xacro:uflite_gripper_urdf attach_to="$(arg prefix)link_eef" />
+  </xacro:if>
+
+  <xacro:unless value="$(arg add_gripper)">
+    <xacro:if value="$(arg add_vacuum_gripper)" >
+      <xacro:include filename="$(find xarm_description)/urdf/lite_vacuum_gripper.urdf.xacro" />
+      <xacro:uflite_vacuum_gripper_urdf attach_to="$(arg prefix)link_eef" />
+    </xacro:if>
+  </xacro:unless>
+
+</robot>

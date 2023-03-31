@@ -1,0 +1,9 @@
+<launch>
+        
+        <!-- Run detect_obj_color_pinza_moveit.py-->
+        <node name="detect_obj_color_pinza_moveit" pkg="mycobot_ai" type="detect_obj_color_pinza_moveit.py"/>
+
+        <!-- Run send_marker.py-->
+        <node name="send_marker" pkg="mycobot_ai" type="send_marker.py"/>
+
+</launch>

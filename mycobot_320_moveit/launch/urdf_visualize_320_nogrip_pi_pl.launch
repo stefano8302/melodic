@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+​
+  <!-- USE: roslaunch my_mira_description urdf_visualize.launch model:='$(find myrobot_package)/urdf/myrobot.urdf'
+  <arg name="model" default="$(find my_mira_description)/urdf/mira_geometric.urdf"/-->
+​
+​
+  <param name="robot_description" textfile="$(find mycobot_description)/urdf/320_urdf/mycobot_pro_320_nogrip_pi_pl.urdf" />
+​
+  <!-- send fake joint values, use the "joint_state_publisher_gui" instead of the ROS course suggested "joint_state_publisher" -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
+    <param name="use_gui" value="False"/>
+  </node>
+​
+  
+  <!-- Combine joint values, remember to add "robot_" to type="robot_state_publisher" -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+​  <!-- respawn="false" output="screen" -->
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find my_mira_description)/rviz_config/mira.rviz"/>
+  <!-- node name="rviz" pkg="rviz" type="rviz" args=""/ -->
+​
+</launch>

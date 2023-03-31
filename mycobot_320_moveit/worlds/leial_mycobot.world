@@ -1,0 +1,1257 @@
+<sdf version='1.7'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='robot'>
+      <joint name='floor_to_container' type='fixed'>
+        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>container</child>
+      </joint>
+      <link name='container'>
+        <pose relative_to='floor_to_container'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 -0.02 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.025</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.025</iyy>
+            <iyz>0</iyz>
+            <izz>0.0125</izz>
+          </inertia>
+        </inertial>
+        <collision name='container_collision'>
+          <pose>0 -0.02 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/Practica_recoger_dejar_c3.dae</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='container_visual'>
+          <pose>0 -0.02 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/Practica_recoger_dejar_c3.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='floor_to_cuboid_tall' type='fixed'>
+        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>cuboid_tall</child>
+      </joint>
+      <link name='cuboid_tall'>
+        <pose relative_to='floor_to_cuboid_tall'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.02 0.18 0.1 0 -0 0</pose>
+          <mass>1.5</mass>
+          <inertia>
+            <ixx>0.025</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.025</iyy>
+            <iyz>0</iyz>
+            <izz>0.0125</izz>
+          </inertia>
+        </inertial>
+        <collision name='cuboid_tall_collision'>
+          <pose>-0.02 0.18 0.1 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.2</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='cuboid_tall_visual'>
+          <pose>-0.02 0.18 0.1 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.2</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/leial</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='vitual_joint' type='fixed'>
+        <pose relative_to='__model__'>0 0 0.012 0 -0 1.57</pose>
+        <parent>world</parent>
+        <child>base</child>
+      </joint>
+      <link name='base'>
+        <pose relative_to='vitual_joint'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.025</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.025</iyy>
+            <iyz>0</iyz>
+            <izz>0.0125</izz>
+          </inertia>
+        </inertial>
+        <collision name='base_collision'>
+          <pose>0 0 0.05 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.102</length>
+              <radius>0.0725</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='base_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/base.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint2_to_joint1' type='revolute'>
+        <pose relative_to='base'>0 0 0.17846 0 -0 0</pose>
+        <parent>base</parent>
+        <child>link1</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14159</upper>
+            <effort>1000</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <damping>2</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link1'>
+        <pose relative_to='joint2_to_joint1'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.005</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.005</iyy>
+            <iyz>0</iyz>
+            <izz>0.005</izz>
+          </inertia>
+        </inertial>
+        <collision name='link1_collision'>
+          <pose>0 0 -0.02 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.106</length>
+              <radius>0.043</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='link1_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/link1.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint3_to_joint2' type='revolute'>
+        <pose relative_to='link1'>0 0 0 -3.14159 -1.57079 -1.57079</pose>
+        <parent>link1</parent>
+        <child>link2</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14159</upper>
+            <effort>1000</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <damping>2</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link2'>
+        <pose relative_to='joint3_to_joint2'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0.0587 0 -0 3.14159</pose>
+          <mass>0.4</mass>
+          <inertia>
+            <ixx>0.003</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.003</iyy>
+            <iyz>0</iyz>
+            <izz>0.003</izz>
+          </inertia>
+        </inertial>
+        <collision name='link2_collision'>
+          <pose>0.07 0 0.095 3.14159 -1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>0.18</length>
+              <radius>0.036</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='link2_visual'>
+          <pose>0 0 0.0587 0 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/link2.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint4_to_joint3' type='revolute'>
+        <pose relative_to='link2'>0.13635 0 0 0 -0 0</pose>
+        <parent>link2</parent>
+        <child>link3</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14159</upper>
+            <effort>1000</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <damping>2</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link3'>
+        <pose relative_to='joint4_to_joint3'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0.038 0 -0 3.14159</pose>
+          <mass>0.4</mass>
+          <inertia>
+            <ixx>0.003</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.003</iyy>
+            <iyz>0</iyz>
+            <izz>0.003</izz>
+          </inertia>
+        </inertial>
+        <collision name='link3_collision'>
+          <pose>0.044 0 0 3.14159 -1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>0.14</length>
+              <radius>0.0305</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='link3_visual'>
+          <pose>0 0 0.038 0 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/link3.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint5_to_joint4' type='revolute'>
+        <pose relative_to='link3'>0.1 0 0.09 0 -0 1.5708</pose>
+        <parent>link3</parent>
+        <child>link4</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14159</upper>
+            <effort>1000</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <damping>2</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link4'>
+        <pose relative_to='joint5_to_joint4'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 -0.001 0 0 -0 0</pose>
+          <mass>0.3</mass>
+          <inertia>
+            <ixx>0.003</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.003</iyy>
+            <iyz>0</iyz>
+            <izz>0.003</izz>
+          </inertia>
+        </inertial>
+        <collision name='link4_collision'>
+          <pose>0 -0.014 0 -1.57079 -1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>0.083</length>
+              <radius>0.029</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='link4_visual'>
+          <pose>0 -0.001 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/link4.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint6_to_joint5' type='revolute'>
+        <pose relative_to='link4'>0 -0.0847 0 -1.57079 1.57079 3.14159</pose>
+        <parent>link4</parent>
+        <child>link5</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14159</upper>
+            <effort>1000</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <damping>2</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link5'>
+        <pose relative_to='joint6_to_joint5'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0.015 0 0 -0 3.14159</pose>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.0061088</ixx>
+            <ixy>-3.22489e-07</ixy>
+            <ixz>2.17039e-11</ixz>
+            <iyy>0.00567</iyy>
+            <iyz>-1.72822e-14</iyz>
+            <izz>0.0061088</izz>
+          </inertia>
+        </inertial>
+        <collision name='link5_collision'>
+          <pose>0 -0.01 0 -1.57079 1.57079 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0849</length>
+              <radius>0.029</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='link5_fixed_joint_lump__link7_collision_1'>
+          <pose>-0 0.028 -0 -0.000803 -1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.028 0.028 0.028</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='link5_visual'>
+          <pose>0 0.002 0 0 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/link5.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='link5_visual_1'>
+          <pose>0 0.039 0 1.57 -0 3.14159</pose>
+          <geometry>
+            <cylinder>
+              <length>0.002</length>
+              <radius>0.026</radius>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='link5_fixed_joint_lump__link7_visual_2'>
+          <pose>-0 0.028 -0 -0.000803 -1.57079 3.14159</pose>
+          <geometry>
+            <box>
+              <size>0.028 0.028 0.028</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint6output_to_joint6' type='revolute'>
+        <pose relative_to='link5'>0 -0.06 0 1.57079 0.001593 3.14159</pose>
+        <parent>link5</parent>
+        <child>link6</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-3.14</lower>
+            <upper>3.14159</upper>
+            <effort>1000</effort>
+            <velocity>0</velocity>
+          </limit>
+          <dynamics>
+            <damping>2</damping>
+            <friction>1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link6'>
+        <pose relative_to='joint6output_to_joint6'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 -0.0225 0 -0 0</pose>
+          <mass>0.6</mass>
+          <inertia>
+            <ixx>0.00385375</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00385375</iyy>
+            <iyz>0</iyz>
+            <izz>0.00424</izz>
+          </inertia>
+        </inertial>
+        <collision name='link6_collision'>
+          <pose>0 0 -0.01 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.0225</length>
+              <radius>0.026</radius>
+            </cylinder>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <collision name='link6_fixed_joint_lump__gripper_collision_1'>
+          <pose>0 0 -0.025 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/gripper_leial.dae</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='link6_visual'>
+          <pose>0 0 -0.01 0 -0 0</pose>
+          <geometry>
+            <cylinder>
+              <length>0.02</length>
+              <radius>0.026</radius>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name='link6_fixed_joint_lump__gripper_visual_1'>
+          <pose>0 0 -0.025 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/gripper_leial.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/SkyBlue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='finger_joint1' type='prismatic'>
+        <pose relative_to='link6'>0 0 0 0 -0 0</pose>
+        <parent>link6</parent>
+        <child>leftfinger</child>
+        <axis>
+          <xyz>-1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0.04</upper>
+            <effort>20</effort>
+            <velocity>0.2</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='leftfinger'>
+        <pose relative_to='finger_joint1'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.04 -0.042 -0.0126 0 1.57 -3.14</pose>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>0.003</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.003</iyy>
+            <iyz>0</iyz>
+            <izz>0.003</izz>
+          </inertia>
+        </inertial>
+        <collision name='leftfinger_collision'>
+          <pose>0.04 -0.042 -0.0126 -0.001593 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/dedo_gripper_leial.dae</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>20</mu>
+                <mu2>20</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='leftfinger_visual'>
+          <pose>0.04 -0.042 -0.0126 -0.001593 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/dedo_gripper_leial.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/SkyBlue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='finger_joint2' type='prismatic'>
+        <pose relative_to='link6'>0 0 0 0 -0 0</pose>
+        <parent>link6</parent>
+        <child>rightfinger</child>
+        <axis>
+          <xyz>1 0 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>0.04</upper>
+            <effort>20</effort>
+            <velocity>0.2</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='rightfinger'>
+        <pose relative_to='finger_joint2'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.045 -0.042 -0.0126 0 1.57 -3.14</pose>
+          <mass>0.05</mass>
+          <inertia>
+            <ixx>0.003</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.003</iyy>
+            <iyz>0</iyz>
+            <izz>0.003</izz>
+          </inertia>
+        </inertial>
+        <collision name='rightfinger_collision'>
+          <pose>-0.045 -0.042 -0.0126 -0.001593 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/dedo_gripper_leial.dae</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>20</mu>
+                <mu2>20</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='rightfinger_visual'>
+          <pose>-0.045 -0.042 -0.0126 -0.001593 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/stefanos/catkin_ws/src/myCobotROS/mycobot_description/urdf/320_urdf/dedo_gripper_leial.dae</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/SkyBlue</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='world_to_floor' type='fixed'>
+        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>floor</child>
+      </joint>
+      <link name='floor'>
+        <pose relative_to='world_to_floor'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1.5</mass>
+          <inertia>
+            <ixx>0.025</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.025</iyy>
+            <iyz>0</iyz>
+            <izz>0.0125</izz>
+          </inertia>
+        </inertial>
+        <collision name='floor_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>10 10 0.01</size>
+            </box>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1000</kp>
+                <kd>1000</kd>
+              </ode>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='floor_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>10 10 0.01</size>
+            </box>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>0</static>
+      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <pose>0 0 0 0 -0 0</pose>
+    </model>
+    <model name='cube'>
+      <link name='link'>
+        <pose>0 0 0.015 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>model://cube_20k/meshes/cube_20k.stl</uri>
+              <scale>0.01 0.01 0.01</scale>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://cube_20k/meshes/cube_20k.stl</uri>
+              <scale>0.01 0.01 0.01</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+          <mass>1</mass>
+        </inertial>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>-0.012424 0.178508 0 0 -0 0</pose>
+    </model>
+    <state world_name='default'>
+      <sim_time>83 193000000</sim_time>
+      <real_time>191 102844026</real_time>
+      <wall_time>1643973633 887682802</wall_time>
+      <iterations>83193</iterations>
+      <model name='cube'>
+        <pose>-0.012456 0.178537 0.193688 0.022028 0.000406 0.001537</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>-0.01245 0.178206 0.208685 0.022028 0.000406 0.001537</pose>
+          <velocity>-0 -0 1.1e-05 2.9e-05 -1e-06 0</velocity>
+          <acceleration>-3e-06 -0.000293 0.011385 0.029024 -0.000783 -7.3e-05</acceleration>
+          <wrench>-3e-06 -0.000293 0.011385 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='robot'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='base'>
+          <pose>-0 0 0.012 0 -0 1.57</pose>
+          <velocity>0 -0 -2e-06 -1.5e-05 4e-06 -4e-06</velocity>
+          <acceleration>-2.6e-05 -0.000501 -0.003849 -0.02945 0.009499 -0.007514</acceleration>
+          <wrench>-2.6e-05 -0.000501 -0.003849 0 -0 0</wrench>
+        </link>
+        <link name='container'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='cuboid_tall'>
+          <pose>0 -0 0 -0 -0 -0</pose>
+          <velocity>0 0 -0 0 -0 0</velocity>
+          <acceleration>-0 0 -0 0 -0 0</acceleration>
+          <wrench>-0 0 -0 0 -0 0</wrench>
+        </link>
+        <link name='floor'>
+          <pose>0 0 3e-06 0 0.000865 0</pose>
+          <velocity>0 0 0.000197 6.3e-05 0.059247 -3e-06</velocity>
+          <acceleration>0.00017 2e-06 0.86915 -3.08615 0.007177 3.13921</acceleration>
+          <wrench>0.000254 4e-06 1.30373 0 -0 0</wrench>
+        </link>
+        <link name='leftfinger'>
+          <pose>0.090137 0.061077 0.511153 1.56492 0.002738 -0.00223</pose>
+          <velocity>1.4e-05 -0.000212 0.000211 0.002203 0.000109 0.00016</velocity>
+          <acceleration>0.014115 -0.224226 0.473547 -1.91707 0.211444 0.30562</acceleration>
+          <wrench>0.000706 -0.011211 0.023677 0 -0 0</wrench>
+        </link>
+        <link name='link1'>
+          <pose>-0 -0 0.19046 0 -0 1.56977</pose>
+          <velocity>1e-06 4e-06 1e-06 -5.1e-05 1.2e-05 -3e-06</velocity>
+          <acceleration>0.001872 0.007708 0.00117 -0.101524 0.026942 -0.002903</acceleration>
+          <wrench>0.000936 0.003854 0.000585 0 -0 0</wrench>
+        </link>
+        <link name='link2'>
+          <pose>-0 -0 0.19046 1.57432 -1.56876 1.56625</pose>
+          <velocity>1e-06 9e-06 1.6e-05 0.0002 -2.5e-05 1.4e-05</velocity>
+          <acceleration>0.002039 0.019495 0.036821 0.396572 -0.053996 0.029734</acceleration>
+          <wrench>0.000816 0.007798 0.014728 0 -0 0</wrench>
+        </link>
+        <link name='link3'>
+          <pose>1e-06 0.000277 0.326809 1.57279 -1.56682 1.56778</pose>
+          <velocity>-3e-06 -1.2e-05 3.9e-05 0.00077 4.6e-05 3.6e-05</velocity>
+          <acceleration>-0.005281 -0.020339 0.07954 1.53482 0.078307 0.076166</acceleration>
+          <wrench>-0.002112 -0.008136 0.031816 0 -0 0</wrench>
+        </link>
+        <link name='link4'>
+          <pose>0.090003 0.000582 0.426807 -1.57081 -0.005855 -1.57182</pose>
+          <velocity>2e-06 -8.5e-05 5e-05 0.001422 -3.8e-05 6.6e-05</velocity>
+          <acceleration>0.003168 -0.172346 0.106566 2.80456 -0.113067 0.135177</acceleration>
+          <wrench>0.00095 -0.051704 0.03197 0 -0 0</wrench>
+        </link>
+        <link name='link5'>
+          <pose>0.090004 0.001078 0.511506 0.005866 -4e-06 3.13938</pose>
+          <velocity>-1e-06 -0.000209 5.8e-05 0.001844 1.1e-05 0.000137</velocity>
+          <acceleration>-0.002158 -0.415328 0.068616 -2.63403 0.034974 0.251238</acceleration>
+          <wrench>-0.000432 -0.083066 0.013723 0 -0 0</wrench>
+        </link>
+        <link name='link6'>
+          <pose>0.090137 0.061077 0.511153 1.56492 0.002737 -0.00223</pose>
+          <velocity>-1e-05 -0.000212 0.000207 0.002044 6.7e-05 0.000141</velocity>
+          <acceleration>-0.02882 -0.419292 0.510042 -2.23516 0.129707 0.294311</acceleration>
+          <wrench>-0.017292 -0.251575 0.306025 0 -0 0</wrench>
+        </link>
+        <link name='rightfinger'>
+          <pose>0.090137 0.061077 0.511153 1.56492 0.002738 -0.00223</pose>
+          <velocity>7e-06 -0.000213 0.000212 0.002142 9.6e-05 0.000151</velocity>
+          <acceleration>0.001952 -0.25621 0.491542 -2.03861 0.192883 0.287708</acceleration>
+          <wrench>9.8e-05 -0.01281 0.024577 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>0.389214 0.524508 0.393051 -0 0.299643 -2.14699</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

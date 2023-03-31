@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="xarm_vacuum_gripper">
+<!--
+  Author: Jason Peng <jason@ufactory.cc>
+-->
+  <xacro:macro name="other_geometry2" params="prefix:='' attach_to:='' rpy:='0 0 0' xyz:='0 0 0' 
+    geometry_type2:='box' 
+    geometry_mass2:='0.1' 
+    geometry_height2:='0.1'
+    geometry_radius2:='0.1'
+    geometry_length2:='0.1'
+    geometry_width2:='0.1'
+    geometry_mesh_filename2:=''
+    geometry_mesh_origin_xyz2:='0 0 0'
+    geometry_mesh_origin_rpy2:='0 0 0'
+    geometry_mesh_tcp_xyz2:='0 0 0'
+    geometry_mesh_tcp_rpy2:='0 0 0'
+    ">
+    <xacro:unless value="${attach_to == ''}">
+      <joint name="${prefix}other_geometry_fix2" type="fixed">
+        <parent link="${attach_to}"/>
+        <child link="${prefix}other_geometry_link2"/>
+        <origin xyz="${xyz}" rpy="${rpy}"/>
+      </joint>
+    </xacro:unless>
+
+    <xacro:if value="${geometry_type2 == 'mesh'}">
+      <xacro:property name="_origin_xyz2" value="${geometry_mesh_origin_xyz2}"/>
+      <xacro:property name="_origin_rpy2" value="${geometry_mesh_origin_rpy2}"/>
+      <xacro:property name="_tcp_xyz2" value="${geometry_mesh_tcp_xyz2}"/>
+      <xacro:property name="_tcp_rpy2" value="${geometry_mesh_tcp_rpy2}"/>
+    </xacro:if>
+    <xacro:unless value="${geometry_type2 == 'mesh'}">
+      <xacro:property name="_origin_xyz2" value="0.3 0.080 ${0.251 + geometry_height2 / 2 if geometry_type2 != 'sphere' else geometry_radius2}"/>
+      <xacro:property name="_origin_rpy2" value="0 0 0"/>
+      <xacro:property name="_tcp_xyz2" value="0 0 ${geometry_height2 if geometry_type2 != 'sphere' else geometry_radius2 * 2}"/>
+      <xacro:property name="_tcp_rpy2" value="0 0 0"/>
+    </xacro:unless>
+
+    <xacro:if value="${geometry_mesh_filename2.startswith('file:///') or geometry_mesh_filename2.startswith('package://')}">
+      <xacro:property name="_mesh_filename2" value="${geometry_mesh_filename2}"/>
+    </xacro:if>
+    <xacro:unless value="${geometry_mesh_filename2.startswith('file:///') or geometry_mesh_filename2.startswith('package://')}">
+      <xacro:property name="_mesh_filename2" value="file:///$(find xarm_description)/meshes/other/${geometry_mesh_filename2}"/>
+    </xacro:unless>
+
+    <link
+      name="${prefix}other_geometry_link2">
+      <inertial>
+        <origin
+          xyz="0.0 0.0 0.055"
+          rpy="0 0 0" />
+        <mass
+          value="${geometry_mass2}" />
+        <inertia
+          ixx="0.00047106"
+          ixy="3.9292E-07"
+          ixz="2.6537E-06"
+          iyy="0.00033072"
+          iyz="-1.0975E-05"
+          izz="0.00025642" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="${_origin_xyz2}"
+          rpy="${_origin_rpy2}" />
+        <geometry>
+          <xacro:if value="${geometry_type2 == 'mesh'}">
+            <mesh filename="${_mesh_filename2}"/>
+          </xacro:if>
+          <xacro:if value="${geometry_type2 == 'sphere'}">
+            <sphere radius="${geometry_radius2}"/>
+          </xacro:if>
+          <xacro:if value="${geometry_type2 == 'cylinder'}">
+            <cylinder length="${geometry_height2}" radius="${geometry_radius2}"/>
+          </xacro:if>
+          <xacro:if value="${geometry_type2 != 'mesh' and geometry_type2 != 'sphere' and geometry_type2 != 'cylinder'}">
+            <box size="${geometry_length2} ${geometry_width2} ${geometry_height2}"/>
+          </xacro:if>
+        </geometry>
+        <material name="White">
+          <color rgba="1.0 1.0 1.0 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="${_origin_xyz2}"
+          rpy="${_origin_rpy2}" />
+        <geometry>
+          <xacro:if value="${geometry_type2 == 'mesh'}">
+            <mesh filename="${_mesh_filename2}"/>
+          </xacro:if>
+          <xacro:if value="${geometry_type2 == 'sphere'}">
+            <sphere radius="${geometry_radius2}"/>
+          </xacro:if>
+          <xacro:if value="${geometry_type2 == 'cylinder'}">
+            <cylinder length="${geometry_height2}" radius="${geometry_radius2}"/>
+          </xacro:if>
+          <xacro:if value="${geometry_type2 != 'mesh' and geometry_type2 != 'sphere' and geometry_type2 != 'cylinder'}">
+            <box size="${geometry_length2} ${geometry_width2} ${geometry_height2}"/>
+          </xacro:if>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="${prefix}link_geometry2" />
+
+    <joint
+      name="${prefix}joint_geometry2"
+      type="fixed">
+      <origin
+        xyz="${_tcp_xyz2}"
+        rpy="${_tcp_rpy2}" />
+      <parent
+        link="${prefix}other_geometry_link2" />
+      <child
+        link="${prefix}link_geometry2" />
+    </joint>
+
+  </xacro:macro>
+
+</robot>

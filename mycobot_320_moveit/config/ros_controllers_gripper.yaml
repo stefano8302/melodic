@@ -1,0 +1,141 @@
+# Simulation settings for using moveit_sim_controllers
+moveit_sim_hw_interface:
+  joint_model_group: arm_group, hand_group
+  joint_model_group_pose: init_pose, open
+# Settings for ros_control_boilerplate control loop
+generic_hw_control_loop:
+  loop_hz: 300
+  cycle_time_error_threshold: 0.03
+# Settings for ros_control hardware interface
+hardware_interface:
+  joints:
+    - joint2_to_joint1
+    - joint3_to_joint2
+    - joint4_to_joint3
+    - joint5_to_joint4
+    - joint6_to_joint5
+    - joint6output_to_joint6
+    - finger_joint1
+    - finger_joint2
+  sim_control_mode: 1  # 0: position, 1: velocity
+# Publish all joint states
+# Creates the /joint_states topic necessary in ROS
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+controller_list:
+  - name: arm_controller_effort
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - joint2_to_joint1
+      - joint3_to_joint2
+      - joint4_to_joint3
+      - joint5_to_joint4
+      - joint6_to_joint5
+      - joint6output_to_joint6
+  - name: hand_controller_effort
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - finger_joint1
+      - finger_joint2
+arm_controller_effort:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - joint2_to_joint1
+    - joint3_to_joint2
+    - joint4_to_joint3
+    - joint5_to_joint4
+    - joint6_to_joint5
+    - joint6output_to_joint6
+  gains:
+    joint2_to_joint1:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+    joint3_to_joint2:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+    joint4_to_joint3:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+    joint5_to_joint4:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+    joint6_to_joint5:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+    joint6output_to_joint6:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 0.1
+    eje1: {trajectory: 0.5, goal: 0.5}
+    eje2: {trajectory: 0.5, goal: 0.5}
+
+hand_controller_effort:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - finger_joint1
+    - finger_joint2
+  gains:
+    finger_joint1:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+    finger_joint2:
+      p: 500
+      d: 1
+      i: 20
+      i_clamp: 1
+   
+/gazebo_ros_control:   
+  pid_gains:
+    joint2_to_joint1:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    joint3_to_joint2:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    joint4_to_joint3:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    joint5_to_joint4:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    joint6_to_joint5:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    joint6output_to_joint6:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    finger_joint1:
+      p: 800.0
+      i: 200 
+      d: 100.0
+    finger_joint2:
+      p: 800.0
+      i: 200 
+      d: 100.0  

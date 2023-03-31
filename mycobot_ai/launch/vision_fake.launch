@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+	
+	<arg name="port" default="/dev/ttyACM0" />
+	<arg name="baud" default="115200" />
+	<!-- <arg name="gui" default="false" /> -->
+
+	<!--param name="robot_description" command="$(find xacro)/xacro--> <!--  inorder $(arg model)" /-->
+	
+	<!-- mycobot-topics -->
+	<!--include file="$(find mycobot_communication)/launch/communication_topic.launch">
+		<arg name="port" value="$(arg port)" />	
+		<arg name="baud" value="$(arg baud)" />	
+	</include-->
+
+        <!-- listen and pub the real angles -->
+	<node name="real_listener" pkg="mycobot_280" type="listen_real_of_topic_fake.py" />
+
+	<!-- launch the gazebo simulator and spawn the robot -->
+	<include file="$(find mycobot_320_moveit_pi_pl)/launch/demo_gazebo_vision.launch" >
+	</include>
+	
+	
+	
+</launch>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="firefighter">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="arm">
+        <joint name="vitual_joint"/>
+        <joint name="joint2_to_joint1"/>
+        <joint name="joint3_to_joint2"/>
+        <joint name="joint4_to_joint3"/>
+        <joint name="joint5_to_joint4"/>
+        <joint name="joint6_to_joint5"/>
+        <joint name="joint6output_to_joint6"/>
+    </group>
+    <group name="gripper">
+        <link name="gripper"/>
+        <link name="leftfinger"/>
+        <link name="rightfinger"/>
+    </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="home" group="arm">
+        <joint name="joint2_to_joint1" value="0"/>
+        <joint name="joint3_to_joint2" value="0"/>
+        <joint name="joint4_to_joint3" value="0"/>
+        <joint name="joint5_to_joint4" value="0"/>
+        <joint name="joint6_to_joint5" value="0"/>
+        <joint name="joint6output_to_joint6" value="0"/>
+    </group_state>
+    
+    <group_state name="beer_pick" group="arm">
+        <joint name="joint2_to_joint1" value="1.972"/>
+        <joint name="joint3_to_joint2" value="-0.297"/>
+        <joint name="joint4_to_joint3" value="1.745"/>
+        <joint name="joint5_to_joint4" value="0.122"/>
+        <joint name="joint6_to_joint5" value="0"/>
+        <joint name="joint6output_to_joint6" value="1.169"/>
+    </group_state>
+    <group_state name="pick3" group="arm">
+        <joint name="joint2_to_joint1" value="-1.19"/>
+        <joint name="joint3_to_joint2" value="-1.27"/>
+        <joint name="joint4_to_joint3" value="1.27"/>
+        <joint name="joint5_to_joint4" value="-1.73"/>
+        <joint name="joint6_to_joint5" value="0.087"/>
+        <joint name="joint6output_to_joint6" value="2.79"/>
+    </group_state>
+    <group_state name="drop" group="arm">
+        <joint name="joint2_to_joint1" value="-1.58"/>
+        <joint name="joint3_to_joint2" value="-1.12"/>
+        <joint name="joint4_to_joint3" value="-0.8"/>
+        <joint name="joint5_to_joint4" value="0.13"/>
+        <joint name="joint6_to_joint5" value="1.56"/>
+        <joint name="joint6output_to_joint6" value="1.79"/>
+    </group_state>
+    <group_state name="pour1" group="arm">
+        <joint name="joint2_to_joint1" value="2.775"/>
+        <joint name="joint3_to_joint2" value="0.244"/>
+        <joint name="joint4_to_joint3" value="0.942"/>
+        <joint name="joint5_to_joint4" value="0.401"/>
+        <joint name="joint6_to_joint5" value="0"/>
+        <joint name="joint6output_to_joint6" value="0.349"/>
+    </group_state>
+    <group_state name="pour2" group="arm">
+        <joint name="joint2_to_joint1" value="3.107"/>
+        <joint name="joint3_to_joint2" value="0.873"/>
+        <joint name="joint4_to_joint3" value="0.925"/>
+        <joint name="joint5_to_joint4" value="-1.483"/>
+        <joint name="joint6_to_joint5" value="-1.553"/>
+        <joint name="joint6output_to_joint6" value="1.291"/>
+    </group_state>
+    <group_state name="open" group="gripper">
+        <joint name="finger_joint1" value="0"/>
+        <joint name="finger_joint2" value="0"/>
+    </group_state>
+    <group_state name="close" group="gripper">
+        <joint name="finger_joint1" value="0.04"/>
+        <joint name="finger_joint2" value="0.04"/>
+    </group_state>
+    <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
+    <end_effector name="gripperend" parent_link="link6" group="gripper" parent_group="arm"/>
+    
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="virtual_joint" type="fixed" parent_frame="world" child_link="world"/>
+    
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="base" link2="container" reason="Adjacent"/>
+    <disable_collisions link1="base" link2="cuboid_tall" reason="Adjacent"/>
+    <disable_collisions link1="base" link2="floor" reason="Adjacent"/>
+    <disable_collisions link1="base" link2="link1" reason="Adjacent"/>
+    <disable_collisions link1="base" link2="table_top" reason="Adjacent"/>
+    <disable_collisions link1="container" link2="cuboid_tall" reason="Adjacent"/>
+    <disable_collisions link1="container" link2="table_top" reason="Adjacent"/>
+    <disable_collisions link1="container" link2="floor" reason="Adjacent"/>
+    <disable_collisions link1="container" link2="link1" reason="Never"/>
+    <disable_collisions link1="container" link2="link2" reason="Never"/>
+    <disable_collisions link1="container" link2="link3" reason="Never"/>
+    <disable_collisions link1="cuboid_tall" link2="floor" reason="Adjacent"/>
+    <disable_collisions link1="cuboid_tall" link2="link1" reason="Never"/>
+    <disable_collisions link1="floor" link2="link1" reason="Never"/>
+    <disable_collisions link1="floor" link2="link2" reason="Never"/>
+    <disable_collisions link1="gripper" link2="leftfinger" reason="Adjacent"/>
+    <disable_collisions link1="gripper" link2="link4" reason="Never"/>
+    <disable_collisions link1="gripper" link2="link5" reason="Never"/>
+    <disable_collisions link1="gripper" link2="link6" reason="Adjacent"/>
+    <disable_collisions link1="gripper" link2="link7" reason="Never"/>
+    <disable_collisions link1="gripper" link2="rightfinger" reason="Adjacent"/>
+    <disable_collisions link1="leftfinger" link2="link4" reason="Never"/>
+    <disable_collisions link1="leftfinger" link2="link5" reason="Never"/>
+    <disable_collisions link1="leftfinger" link2="link6" reason="User"/>
+    <disable_collisions link1="leftfinger" link2="link7" reason="Never"/>
+    <disable_collisions link1="leftfinger" link2="rightfinger" reason="Never"/>
+    <disable_collisions link1="link1" link2="link2" reason="Adjacent"/>
+    <disable_collisions link1="link1" link2="link4" reason="Never"/>
+    <disable_collisions link1="link1" link2="link7" reason="Never"/>
+    <disable_collisions link1="link2" link2="link3" reason="Adjacent"/>
+    <disable_collisions link1="link3" link2="link4" reason="Adjacent"/>
+    <disable_collisions link1="link3" link2="link7" reason="Never"/>
+    <disable_collisions link1="link4" link2="link5" reason="Adjacent"/>
+    <disable_collisions link1="link4" link2="link6" reason="Never"/>
+    <disable_collisions link1="link4" link2="link7" reason="Never"/>
+    <disable_collisions link1="link4" link2="rightfinger" reason="Never"/>
+    <disable_collisions link1="link5" link2="link6" reason="Adjacent"/>
+    <disable_collisions link1="link5" link2="link7" reason="Adjacent"/>
+    <disable_collisions link1="link5" link2="rightfinger" reason="Never"/>
+    <disable_collisions link1="link6" link2="link7" reason="Never"/>
+    <disable_collisions link1="link6" link2="rightfinger" reason="User"/>
+    <disable_collisions link1="link7" link2="rightfinger" reason="Never"/>
+    <disable_collisions link1="floor" link2="ramp" reason="Adjacent"/>
+    <disable_collisions link1="table_top" link2="ramp" reason="Adjacent"/>
+    
+    <disable_collisions link1="floor" link2="support" reason="Adjacent"/>
+    <disable_collisions link1="sphere" link2="support" reason="Adjacent"/>
+    <disable_collisions link1="sphere" link2="slide" reason="Adjacent"/>
+    <disable_collisions link1="link5" link2="link8" reason="Adjacent"/>
+    <disable_collisions link1="link6" link2="link8" reason="Adjacent"/>
+    <disable_collisions link1="link8" link2="gripper" reason="Adjacent"/>
+    <disable_collisions link1="link8" link2="link9" reason="Adjacent"/>
+</robot>

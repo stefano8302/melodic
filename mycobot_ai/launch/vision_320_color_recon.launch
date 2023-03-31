@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <node name="color_recon" pkg="mycobot_ai" type="detect_obj_color_pinza.py"/>
+
+</launch>

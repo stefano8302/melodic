@@ -1,0 +1,238 @@
+<?xml version="1.0"?>
+<robot  xmlns:xacro="http://www.ros.org/wiki/xacro" name="cam_cali_chess" >
+
+<xacro:property name="width" value=".2" />
+
+  <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="light_blue">
+        <color rgba="0 0 1.0 1"/>
+  </material>
+  <material name="red">
+        <color rgba="0.8 0 0 1"/>
+  </material>
+  <material name="green">
+        <color rgba="0 0.8 0 1"/>
+  </material>
+  <material name="dark_green">
+        <color rgba="0 0.5 0 1"/>
+  </material>
+  <material name="grey">
+        <color rgba="0.75 0.75 0.75 1"/>
+  </material>
+  <material name="white">
+        <color rgba="1.0 1.0 1.0 1"/>
+  </material>
+  <material name="black">
+        <color rgba="0 0 0 1"/>
+  </material>
+
+  <!-- * * * Leave or take this plugin off as required * * * -->
+  <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <!--robotNamespace>/firefighter_legrip_pi_pl2</robotNamespace-->
+      </plugin>
+  </gazebo>
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="world">
+    <origin xyz = "0 0 0.012" rpy = " 0 0 1.57"/>
+  </link>
+  
+  <joint name="virtual_joint" type="fixed">
+    <parent link="world"/>
+    <child link="chess"/>
+    <origin xyz="0 0 0.01" rpy="0 0 0"/>
+  </joint>
+
+<!-- scene objects -->
+     
+    
+    
+    
+
+  <link name="chess">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.630 0.890 0.0001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.630 0.890 0.0001"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <gazebo reference="chess">
+        <material>Gazebo/chess</material>
+  </gazebo>
+  
+  <joint name="link1_world_joint" type="fixed">
+    <axis xyz="0 0 1" />
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="link1"/>
+  </joint>
+  
+  <link name="link1">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.02 0.02 0.0001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.02 0.02 0.0001"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <gazebo reference="link1">
+        <material>Gazebo/White</material>
+  </gazebo>
+  
+  <joint name="link1_link2_joint" type="revolute">
+    <axis xyz="0 0 1" />
+    <origin xyz="-1 0 0.03" rpy="0 1.57 0"/>
+    <parent link="link1"/>
+    <child link="link2"/>
+    <limit effort = "1000.0" lower = "-3.14" upper = "3.14159" velocity = "1.0"/>
+    <dynamics damping="2.0" friction="1.0"/>
+  </joint>
+  
+  <link name="link2">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.02 0.02 0.0001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.02 0.02 0.0001"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <gazebo reference="link2">
+        <material>Gazebo/White</material>
+  </gazebo>  
+  
+  <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="link1_link2_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>    
+        </joint>
+        <actuator name="motor1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+  </transmission>
+  
+  <!-- Camera Vision -->
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 0 1" />
+    <origin xyz="0 0 1" rpy="0 1.57 3.14"/>
+    <parent link="world"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.02 0.02 0.02"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+    <box size="0.02 0.02 0.01"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <gazebo reference="camera_link">
+        <material>Gazebo/Red</material>
+  </gazebo>
+
+  <!-- Camera Vision Plugin Properties-->
+  <gazebo reference="camera_link">
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1</horizontal_fov>
+        <image>
+          <width>400</width>
+          <height>400</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>/camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>

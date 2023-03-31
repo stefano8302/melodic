@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="namespace2" default="elephant"/>
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <!-- Load trajectory controller for xArm by default -->
+  
+  <rosparam file="$(find mycobot_320_moveit)/config/ros_controllers2.yaml" command="load" ns="$(arg namespace2)"/>
+  <node name="traj_controller_spawner2"
+    pkg="controller_manager"
+    type="controller_manager"
+    respawn="false"
+    output="screen"
+    ns="$(arg namespace2)"
+    args="spawn arm_position_controller joint_state_controller"/>
+
+  
+  
+
+ 
+  <!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher2" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+    <remap from="/joint_states" to="/$(arg namespace2)/joint_states" />
+  </node>
+
+  
+
+</launch>
